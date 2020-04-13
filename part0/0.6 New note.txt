@@ -1,0 +1,18 @@
+title 0.6 New note
+
+
+
+note over browser:
+user clicks submit button on form and
+browser executes js-code to add the new
+note to the list, redraw the list on the
+page, and send new note to the server
+end note
+
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa {"content":"New note", "date":"2020-04-13T23:42:25.471Z"}
+
+note over server:
+server adds new note to data.json
+end note
+
+server->browser: HTTP 201 {"message":"note created"}

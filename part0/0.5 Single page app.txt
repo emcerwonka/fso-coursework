@@ -1,0 +1,21 @@
+title 0.5 Single page app
+
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/spa
+server->browser: HTTP 200 HTML-code
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+server->browser: HTTP 200 main.css
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/spa.js
+server->browser: HTTP 200 spa.js
+
+note over browser:
+browser executes js-code to redraw the
+list and request data.json from the server
+end note
+
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
+server->browser: HTTP 200 data.json {[{Content:"New Note", Date: 2020-04-13T23:05:36.775Z}, {...}, ...]}
+
+note over browser:
+browser executes js-code to render
+data.json in the HTML page
+end note

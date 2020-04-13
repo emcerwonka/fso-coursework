@@ -3,8 +3,8 @@ title 0.4 new note
 browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note {note="New note"}
 
 note over server:
-server executes js-code
-to add note to data.json
+server executes js-code to add note
+to data.json
 end note
 
 server->browser: HTTP 302 Location: https://fullstack-exampleapp.herokuapp.com/notes
@@ -16,15 +16,13 @@ browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.js
 server->browser: HTTP 200 main.js
 
 note over browser:
-browser executes js-code
-to request data.json
-from the server
+browser executes js-code to request
+data.json from the server
 end note
 
 browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
 server->browser: HTTP 200 data.json {[{Content:"New Note", Date: 2020-04-13T23:05:36.775Z}, {...}, ...]}
 
 note over browser:
-browser executes js-code
-to render data.json in
-the HTML page
+browser executes js-code to render
+data.json in the HTML page

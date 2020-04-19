@@ -4,29 +4,35 @@ import ReactDOM from 'react-dom'
 const Section = ({ text }) => <h1>{text}</h1>
 
 const Statistic = ({ text, value }) => {
-  return <div>
-    <p>{text} : {value}</p>
-  </div>
+  return (
+    <tr>
+      <td>{text}</td><td>{value}</td>
+    </tr>
+  )
 }
 
 const Statistics = ({ good, neutral, bad }) => {
   let all = good + neutral + bad
   let avg = (all !== 0) ? (((good * 1) + (neutral * 0) + (bad * -1)) / all) : 0
   let pos = (all !== 0) ? (good / all) : 0
-  
+
   if (all !== 0) {
     return (
       <div>
-        <Statistic text='g oo d' value={good} />
-        <Statistic text='n eu t ra l' value={neutral} />
-        <Statistic text='b ad' value={bad} />
-        <Statistic text='a ll' value={all} />
-        <Statistic text='a ve r ag e' value={avg} />
-        <Statistic text='p os i ti v e' value={pos} />
+        <table>
+          <tbody>
+            <Statistic text='good' value={good} />
+            <Statistic text='neutral' value={neutral} />
+            <Statistic text='bad' value={bad} />
+            <Statistic text='all' value={all} />
+            <Statistic text='average' value={avg} />
+            <Statistic text='positive' value={pos} />
+          </tbody>
+        </table>
       </div>
     )
   }
-  
+
   return <p>n o + f e e d b a c k + g i v e n</p>
 }
 

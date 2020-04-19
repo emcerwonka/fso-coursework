@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 
 const Section = ({ text }) => <h1>{text}</h1>
 
-const Stats = ({ good, neutral, bad, all, avg, pos }) => {
+const Statistics = ({ good, neutral, bad, all, avg, pos }) => {
   return (
     <div>
       <p>g oo d : {good}</p>
@@ -25,7 +25,7 @@ const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
-  
+
   let all = good + neutral + bad
   let avg = (all !== 0) ? ((good * 1) + (neutral * 0) + (bad * -1) / all) : 0
   let pos = (all !== 0) ? (good / all) : 0
@@ -37,7 +37,7 @@ const App = () => {
       <Button text='N EU T RA L' handler={() => setNeutral(neutral + 1)} />
       <Button text='B AD' handler={() => setBad(bad + 1)} />
       <Section text='* S T A T I S T I C S *' />
-      <Stats 
+      <Statistics 
         good={good}
         neutral={neutral}
         bad={bad}

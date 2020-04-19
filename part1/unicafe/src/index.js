@@ -7,17 +7,21 @@ const Statistics = ({ good, neutral, bad }) => {
   let all = good + neutral + bad
   let avg = (all !== 0) ? (((good * 1) + (neutral * 0) + (bad * -1)) / all) : 0
   let pos = (all !== 0) ? (good / all) : 0
-
-  return (
-    <div>
-      <p>g oo d : {good}</p>
-      <p>n eu t ra l : {neutral}</p>
-      <p>b ad : {bad}</p>
-      <p>a ll : {all}</p>
-      <p>a ve r ag e : {avg}</p>
-      <p>p os i ti v e : {pos}</p>
-    </div>
-  )
+  
+  if (all !== 0) {
+    return (
+      <div>
+        <p>g oo d : {good}</p>
+        <p>n eu t ra l : {neutral}</p>
+        <p>b ad : {bad}</p>
+        <p>a ll : {all}</p>
+        <p>a ve r ag e : {avg}</p>
+        <p>p os i ti v e : {pos}</p>
+      </div>
+    )
+  }
+  
+  return <p>n o + f e e d b a c k + g i v e n</p>
 }
 
 const Button = ({ text, handler }) => {

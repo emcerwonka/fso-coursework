@@ -3,6 +3,12 @@ import ReactDOM from 'react-dom'
 
 const Section = ({ text }) => <h1>{text}</h1>
 
+const Statistic = ({ text, value }) => {
+  return <div>
+    <p>{text} : {value}</p>
+  </div>
+}
+
 const Statistics = ({ good, neutral, bad }) => {
   let all = good + neutral + bad
   let avg = (all !== 0) ? (((good * 1) + (neutral * 0) + (bad * -1)) / all) : 0
@@ -11,12 +17,12 @@ const Statistics = ({ good, neutral, bad }) => {
   if (all !== 0) {
     return (
       <div>
-        <p>g oo d : {good}</p>
-        <p>n eu t ra l : {neutral}</p>
-        <p>b ad : {bad}</p>
-        <p>a ll : {all}</p>
-        <p>a ve r ag e : {avg}</p>
-        <p>p os i ti v e : {pos}</p>
+        <Statistic text='g oo d' value={good} />
+        <Statistic text='n eu t ra l' value={neutral} />
+        <Statistic text='b ad' value={bad} />
+        <Statistic text='a ll' value={all} />
+        <Statistic text='a ve r ag e' value={avg} />
+        <Statistic text='p os i ti v e' value={pos} />
       </div>
     )
   }

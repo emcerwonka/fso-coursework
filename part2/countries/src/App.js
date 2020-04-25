@@ -27,7 +27,7 @@ function App() {
   return (
     <div>
       <CountryFinder term={searchTerm} onChange={handleTermChange} />
-      <Countries countries={visibleCountries} />
+      <Countries countries={visibleCountries} infoHandler={handleTermChange}/>
     </div>
   )
 }

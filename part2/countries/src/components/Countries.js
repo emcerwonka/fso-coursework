@@ -1,7 +1,8 @@
 import React from 'react'
 import Country from './Country'
 
-const Countries = ({ countries }) => {
+const Countries = ({ countries, infoHandler }) => {
+
   if (countries.length > 10) {
     return <p>Too many matches, please be more specific.</p>
   }
@@ -14,7 +15,7 @@ const Countries = ({ countries }) => {
     <ul>
       {countries.map(country =>
         <li key={country.name}>
-          {country.name}
+          {country.name} <button value={country.name} onClick={infoHandler}>INFO</button>
         </li>)}
     </ul>
   )

@@ -14,7 +14,11 @@ const Country = ({ country }) => {
           </li>
         )}
       </ul>
-      <img src={country.flag} style={{width:200, height:128}}/>
+      <img
+        src={country.flag}
+        style={{ width: 200, height: 128 }}
+        alt="Flag of {{country.flag}}"
+      />
     </div>
   )
 }

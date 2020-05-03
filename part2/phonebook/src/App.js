@@ -33,9 +33,25 @@ const App = () => {
     setSearchTerm(event.target.value)
   }
 
-  const addPerson = (event) => {
-    if (persons.find(person => person.name === newName)) {
-      alert(`${newName} is already added to phonebook.`)
+  const addOrUpdatePerson = (event) => {
+    const existingPerson = persons.find(person => person.name === newName)
+
+    if (existingPerson) {
+      const confirmed = window.confirm(
+        `${existingPerson.name} already exists. Update their phone number?`
+      )
+
+      if (confirmed) {
+        event.preventDefault()
+        const changedPerson = { ...existingPerson, number: newNumber }
+        personService.updatePerson(changedPerson).then(returnedPerson => {
+          setPersons(
+            persons.map(person => person.id !== existingPerson.id
+              ? person
+              : returnedPerson
+            ))
+        })
+      }
     } else {
       event.preventDefault()
       const person = {
@@ -51,9 +67,19 @@ const App = () => {
   }
 
   const removePerson = (id) => {
-    personService.deletePerson(id).then(response => {
-      setPersons(persons.filter(person => person.id !== id))
-    })
+    const personToDelete = persons.find(person => person.id === id)
+    const confirmed = window.confirm(`Delete ${personToDelete.name}?`)
+
+    if (confirmed) {
+      personService.deletePerson(id)
+        .then(response => {
+          setPersons(persons.filter(person => person.id !== id))
+        })
+        .catch(error => {
+          alert(`${personToDelete.name} no longer exists on the server.`)
+          setPersons(persons.filter(person => person.id !== id))
+        })
+    }
   }
 
   const resetForms = () => {
@@ -67,7 +93,7 @@ const App = () => {
       <Filter searchTerm={searchTerm} handler={handleTermChange} />
       <h2>Add New Number</h2>
       <AddNewPerson
-        submitHandler={addPerson}
+        submitHandler={addOrUpdatePerson}
         nameValue={newName}
         nameChange={handleNameChange}
         numberValue={newNumber}

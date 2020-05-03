@@ -50,6 +50,12 @@ const App = () => {
     }
   }
 
+  const removePerson = (id) => {
+    personService.deletePerson(id).then(response => {
+      setPersons(persons.filter(person => person.id !== id))
+    })
+  }
+
   const resetForms = () => {
     setNewName('')
     setNewNumber('')
@@ -70,6 +76,7 @@ const App = () => {
       <h2>Numbers</h2>
       <Persons
         personsList={personsToShow}
+        removeHandler={removePerson}
       />
     </div>
   )

@@ -1,12 +1,16 @@
 import React from 'react'
 import Person from './Person'
 
-const Persons = ({ personsList }) => {
+const Persons = ({ personsList, removeHandler }) => {
   return (
     <ul>
       {personsList.map(person =>
-        <li key={person.name}>
-          <Person name={person.name} number={person.number} />
+        <li key={person.id}>
+          <Person 
+            name={person.name} 
+            number={person.number}
+            id={person.id}
+            removeHandler={removeHandler} />
         </li>
       )}
     </ul>

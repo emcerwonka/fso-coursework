@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Notification = ({ message }) => {
+const Notification = ({ message, errorState }) => {
   const messageStyle = {
     color: 'green',
     background: 'lightgrey',
@@ -11,8 +11,18 @@ const Notification = ({ message }) => {
     marginBottom: 10,
   }
 
+  const errorStyle = { ...messageStyle, color: 'red' }
+
   if (message === null) {
     return null
+  }
+
+  if (errorState) {
+    return (
+      <div style={errorStyle} >
+        {message}
+      </div>
+    )
   }
 
   return (

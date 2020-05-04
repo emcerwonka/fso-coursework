@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [notification, setNotification] = useState(null)
+  const [errorState, setErrorState] = useState(false)
 
   useEffect(() => {
     personService
@@ -59,6 +60,15 @@ const App = () => {
               setNotification(null)
             }, 3000)
           })
+          .catch(error => {
+            setErrorState(true)
+            setNotification(`${changedPerson.name} no longer exists on the server.`)
+            setPersons(persons.filter(person => person.id !== changedPerson.id))
+            setTimeout(() => {
+              setNotification(null)
+              setErrorState(false)
+            }, 3000)
+          })
       }
     } else {
       event.preventDefault()
@@ -88,10 +98,19 @@ const App = () => {
       personService.deletePerson(id)
         .then(response => {
           setPersons(persons.filter(person => person.id !== id))
+          setNotification(`${personToDelete.name} was removed from the phonebook.`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 3000)
         })
         .catch(error => {
-          alert(`${personToDelete.name} no longer exists on the server.`)
+          setErrorState(true)
+          setNotification(`${personToDelete.name} no longer exists on the server.`)
           setPersons(persons.filter(person => person.id !== id))
+          setTimeout(() => {
+            setNotification(null)
+            setErrorState(false)
+          }, 3000)
         })
     }
   }
@@ -104,7 +123,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notification} />
+      <Notification message={notification} errorState={errorState} />
       <Filter searchTerm={searchTerm} handler={handleTermChange} />
       <h2>Add New Number</h2>
       <AddNewPerson

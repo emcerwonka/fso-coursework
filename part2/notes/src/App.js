@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import Note from './components/Note'
+import Notification from './components/Notification'
 import noteService from './services/notes'
+import Footer from './components/Footer'
 
 const App = (props) => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     noteService
@@ -50,9 +53,12 @@ const App = (props) => {
         setNotes(notes.map(note => note.id !== id ? note : returnedNote))
       })
       .catch(error => {
-        alert(
-          `The note '${note.content}' no longer exists on the server.`
+        setErrorMessage(
+          `Note '${note.content}' no longer exists on the server.`
         )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
         setNotes(notes.filter(n => n.id !== id))
       })
   }
@@ -64,15 +70,16 @@ const App = (props) => {
   return (
     <div>
       <h1>Notes</h1>
+      <Notification message={errorMessage} />
       <div>
         <button onClick={toggleShowAll}>
           SHOW {showAll ? 'IMPORTANT' : 'ALL'}
         </button>
       </div>
       <ul>
-        {notesToShow.map((note) =>
+        {notesToShow.map((note, i) =>
           <Note
-            key={note.id}
+            key={i}
             note={note}
             toggleImportance={() => toggleImportance(note.id)}
           />
@@ -85,6 +92,7 @@ const App = (props) => {
         />
         <button type="submit">S A V E</button>
       </form>
+      <Footer />
     </div>
   )
 }

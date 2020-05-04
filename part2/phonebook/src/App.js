@@ -3,12 +3,14 @@ import Filter from './components/Filter'
 import Persons from './components/Persons'
 import AddNewPerson from './components/AddNewPerson'
 import personService from './services/PersonService'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     personService
@@ -44,13 +46,19 @@ const App = () => {
       if (confirmed) {
         event.preventDefault()
         const changedPerson = { ...existingPerson, number: newNumber }
-        personService.updatePerson(changedPerson).then(returnedPerson => {
-          setPersons(
-            persons.map(person => person.id !== existingPerson.id
-              ? person
-              : returnedPerson
-            ))
-        })
+        personService
+          .updatePerson(changedPerson)
+          .then(returnedPerson => {
+            setPersons(
+              persons.map(person => person.id !== existingPerson.id
+                ? person
+                : returnedPerson
+              ))
+            setNotification(`${changedPerson.name}'s phone number was updated.`)
+            setTimeout(() => {
+              setNotification(null)
+            }, 3000)
+          })
       }
     } else {
       event.preventDefault()
@@ -59,9 +67,15 @@ const App = () => {
         number: newNumber
       }
 
-      personService.addNewPerson(person).then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
-      })
+      personService
+        .addNewPerson(person)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNotification(`${person.name} was added to the phonebook.`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 3000)
+        })
       resetForms()
     }
   }
@@ -90,6 +104,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification} />
       <Filter searchTerm={searchTerm} handler={handleTermChange} />
       <h2>Add New Number</h2>
       <AddNewPerson

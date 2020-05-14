@@ -62,12 +62,12 @@ const App = () => {
           })
           .catch(error => {
             setErrorState(true)
-            setNotification(`${changedPerson.name} no longer exists on the server.`)
-            setPersons(persons.filter(person => person.id !== changedPerson.id))
+            setNotification(error.response.data.error)
             setTimeout(() => {
               setNotification(null)
               setErrorState(false)
             }, 3000)
+            console.log(error.response.data.error)
           })
       }
     } else {
@@ -80,11 +80,21 @@ const App = () => {
       personService
         .addNewPerson(person)
         .then(returnedPerson => {
+          console.log('Returned from PersonService: ', returnedPerson)
           setPersons(persons.concat(returnedPerson))
           setNotification(`${person.name} was added to the phonebook.`)
           setTimeout(() => {
             setNotification(null)
           }, 3000)
+        })
+        .catch(error => {
+          setErrorState(true)
+          setNotification(error.response.data.error)
+          setTimeout(() => {
+            setNotification(null)
+            setErrorState(false)
+          }, 3000)
+          console.log(error.response.data.error)
         })
       resetForms()
     }

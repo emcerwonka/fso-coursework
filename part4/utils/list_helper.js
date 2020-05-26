@@ -15,10 +15,61 @@ const findFavorite = (blogs) => {
       .reduce((prevLikes, nextLikes) => {
         return Math.max(prevLikes, nextLikes)
       })
-  // Math.max(blogs.map(blog => blog.likes))
-  console.log(maxLikes)
 
   return blogs.find(blog => blog.likes === maxLikes)
+}
+
+const mostBlogs = (blogs) => {
+  return blogs.length === 0
+    ? {}
+    : findAuthorWithMostBlogs(blogs)
+}
+
+const findAuthorWithMostBlogs = (blogs) => {
+  let authorList = blogs.reduce((authors, blog) => {
+    authors[blog.author] = authors[blog.author] || []
+    authors[blog.author].push(blog)
+    return authors
+  }, {})
+
+  let authorNumbers = []
+  for (var entry in authorList) {
+    authorNumbers.push({
+      author: entry,
+      blogs: authorList[entry].length
+    })
+  }
+
+  return authorNumbers.reduce((maxAuthor, author) => maxAuthor.blogs > author.blogs ? maxAuthor : author)
+}
+
+const mostLikes = (blogs) => {
+  return blogs.length === 0
+    ? {}
+    : findAuthorWithMostLikes(blogs)
+}
+
+const findAuthorWithMostLikes = (blogs) => {
+  let authorList = blogs.reduce((authors, blog) => {
+    authors[blog.author] = authors[blog.author] || []
+    authors[blog.author].push(blog)
+    return authors
+  }, {})
+
+  let authorNumbers = []
+  for (var entry in authorList) {
+    authorNumbers.push({
+      author: entry,
+      likes: authorList[entry]
+        .map(blog => blog.likes)
+        .reduce((sum, likes) => {
+          return sum + likes
+        }, 0)
+    })
+  }
+
+  return authorNumbers.reduce((maxAuthor, author) => maxAuthor.likes > author.likes ? maxAuthor : author)
+
 }
 
 const totalLikes = (blogs) => {
@@ -34,5 +85,7 @@ const totalLikes = (blogs) => {
 module.exports = {
   dummy,
   favoriteBlog,
+  mostBlogs,
+  mostLikes,
   totalLikes
 }

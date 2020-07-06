@@ -33,6 +33,26 @@ describe('api test', () => {
 
     response.body.forEach(blog => expect(blog.id).toBeDefined())
   })
+
+  test('new blog can be created', async () => {
+    const newBlog = new Blog({
+      title: 'Big Bad Dumb Bois',
+      author: 'James Weston',
+      url: 'www.bbdb.com',
+      likes: '15'
+    })
+
+    await api.post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAfterTest = await api.get('/api/blogs')
+    expect(blogsAfterTest.body).toHaveLength(blogList.length + 1)
+
+    const blogTitles = blogsAfterTest.body.map(blog => blog.title)
+    expect(blogTitles).toContain('Big Bad Dumb Bois')
+  })
 })
 
 afterAll(() => {

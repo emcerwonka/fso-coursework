@@ -53,6 +53,24 @@ describe('api test', () => {
     const blogTitles = blogsAfterTest.body.map(blog => blog.title)
     expect(blogTitles).toContain('Big Bad Dumb Bois')
   })
+
+  test('default likes should be 0', async () => {
+    const newBlog = new Blog({
+      title: 'The Most Horrible page in The Universe',
+      author: 'Maddox',
+      url: 'www.thissiteisshite.edu'
+    })
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAfterTest = await api.get('/api/blogs')
+    const blogUnderTest = blogsAfterTest.body.find(blog => blog.title === newBlog.title)
+    expect(blogUnderTest.likes).toEqual(0)
+  })
 })
 
 afterAll(() => {

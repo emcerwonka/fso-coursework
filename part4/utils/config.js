@@ -2,6 +2,7 @@ require('dotenv').config()
 
 let MONGODB_URI = process.env.MONGODB_URI
 let MONGO_OPTS = {
+  setDefaultsOnInsert: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,

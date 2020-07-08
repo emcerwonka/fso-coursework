@@ -71,6 +71,18 @@ describe('api test', () => {
     const blogUnderTest = blogsAfterTest.body.find(blog => blog.title === newBlog.title)
     expect(blogUnderTest.likes).toEqual(0)
   })
+
+  test('new blog without title or url should be rejected', async () => {
+    const badBlog = new Blog({
+      author: 'Mr Irresponsible',
+      likes: 100000000
+    })
+
+    await api
+      .post('/api/blogs')
+      .send(badBlog)
+      .expect(400)
+  })
 })
 
 afterAll(() => {

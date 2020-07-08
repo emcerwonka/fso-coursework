@@ -83,6 +83,41 @@ describe('api test', () => {
       .send(badBlog)
       .expect(400)
   })
+
+  test('blog can be deleted', async () => {
+    const blogsInDb = await api.get('/api/blogs')
+    const blogToDelete = blogsInDb.body[0]
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+
+    const blogsAfterTest = await api.get('/api/blogs')
+    expect(blogsAfterTest.body).toHaveLength(blogsInDb.body.length - 1)
+
+    const titles = blogsAfterTest.body.map(blog => blog.title)
+    expect(titles).not.toContain(blogToDelete.title)
+  })
+
+  test('blog can be updated', async () => {
+    const blogsInDb = await api.get('/api/blogs')
+    const blogToUpdate = blogsInDb.body[0]
+
+    const response = await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send({
+        title: 'New In Town',
+        author: 'John Mulaney',
+        likes: '8004',
+        url: 'www.NiT.com'
+      })
+      .expect(200)
+
+    const blogsAfterTest = await api.get('/api/blogs')
+    const titles = blogsAfterTest.body.map(blog => blog.title)
+    expect(titles).toContain(response.body.title)
+    expect(titles).not.toContain(blogToUpdate.title)
+  })
 })
 
 afterAll(() => {

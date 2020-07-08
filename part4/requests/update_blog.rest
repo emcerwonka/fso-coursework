@@ -1,0 +1,6 @@
+PUT http://localhost:3003/api/blogs/5ec03f7c9e12b73f68b48ff4
+Content-Type: application/json
+
+{
+  "title": "Unmingled Monstrosity"
+}

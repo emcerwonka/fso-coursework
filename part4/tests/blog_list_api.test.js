@@ -124,7 +124,7 @@ describe('api test', () => {
 })
 
 describe('users api tests', () => {
-  beforeEach(async() => {
+  beforeEach(async () => {
     await User.deleteMany({})
 
     for (let user of userList) {
@@ -161,6 +161,40 @@ describe('users api tests', () => {
 
     const usernames = usersAfterTest.body.map(user => user.username)
     expect(usernames).toContain(newUser.username)
+  })
+
+  test('new username must be longer than 3 characters', async () => {
+    const shortusername = {
+      username: 'Ne',
+      name: 'hmnew',
+      password: 'somecret'
+    }
+
+    const response = await api.post('/api/users').send(shortusername).expect(400)
+    expect(response.body.error)
+      .toContain('shorter than the minimum allowed length (3).')
+  })
+
+  test('new user must have password', async () => {
+    const nopassword = {
+      name: 'New Guy',
+      username: 'heyimnew'
+    }
+
+    const response = await api.post('/api/users').send(nopassword).expect(400)
+    expect(response.body.error)
+      .toContain('New Users must specify a password.')
+  })
+
+  test('new user must have username', async () => {
+    const nousername = {
+      name: 'New Guy',
+      password: 'somedumbsecret'
+    }
+
+    const response = await api.post('/api/users').send(nousername).expect(400)
+    expect(response.body.error)
+      .toContain('User validation failed: username: Path `username` is required.')
   })
 })
 

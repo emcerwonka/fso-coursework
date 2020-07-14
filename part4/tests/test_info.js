@@ -62,8 +62,22 @@ const blogs = [
   }
 ]
 
+const users = [
+  {
+    username: 'gwil0S',
+    name: 'Gandy Willows',
+    password: 'swillumulliws'
+  },
+  {
+    username: 'm4x',
+    name: 'Mark Forexe',
+    password: 'likesxtrasalt'
+  }
+]
+
 module.exports = {
   blogs,
   emptyList,
-  listWithOneBlog
+  listWithOneBlog,
+  users
 }

@@ -3,7 +3,10 @@ const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
 const blogList = require('./test_info').blogs
+const userList = require('./test_info').users
 const Blog = require('../models/blog')
+const User = require('../models/user')
+const { users } = require('./test_info')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -117,6 +120,47 @@ describe('api test', () => {
     const titles = blogsAfterTest.body.map(blog => blog.title)
     expect(titles).toContain(response.body.title)
     expect(titles).not.toContain(blogToUpdate.title)
+  })
+})
+
+describe('users api tests', () => {
+  beforeEach(async() => {
+    await User.deleteMany({})
+
+    for (let user of userList) {
+      let userObject = new User(user)
+      await userObject.save()
+    }
+  })
+
+  test('users are returned as json', async () => {
+    await api
+      .get('/api/users')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+  })
+
+  test('all users are returned', async () => {
+    const response = await api.get('/api/users')
+
+    expect(response.body).toHaveLength(userList.length)
+  })
+
+  test('new user can be created', async () => {
+    const usersBeforeTest = await api.get('/api/users')
+
+    const newUser = new User({
+      name: 'New Guy',
+      username: 'heyimnew',
+      password: 'somedumbsecret'
+    })
+
+    await newUser.save()
+    const usersAfterTest = await api.get('/api/users')
+    expect(usersAfterTest.body).toHaveLength(usersBeforeTest.body.length + 1)
+
+    const usernames = usersAfterTest.body.map(user => user.username)
+    expect(usernames).toContain(newUser.username)
   })
 })
 

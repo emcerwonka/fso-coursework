@@ -2,6 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "url": "gorillavsbear.blogspot.com",
-  "likes": 7779813768
+  "title": "One More Time",
+  "author": "Mark Rebillet",
+  "url": "markrebillet.com",
+  "likes": 49827435
 }

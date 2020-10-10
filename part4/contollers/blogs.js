@@ -1,4 +1,5 @@
 const blogsRouter = require('express').Router()
+const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const { blogs } = require('../tests/test_info')
@@ -11,7 +12,9 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
-  const creator = await User.findOne({})
+  const token = request.token
+
+  const creator = await User.findById(token.id)
 
   const blog = new Blog({
     title: body.title,

@@ -1,9 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjVmMGU2MzFiMzI0NmRlODc5ZjcxNTFkNiIsImlhdCI6MTYwMjM1MTI4NX0.geFBZhm4dAa7UahmQGmzvWms8Nl90QMZV6llrON71Us
 
 {
-  "title": "One More Time",
-  "author": "Mark Rebillet",
-  "url": "markrebillet.com",
-  "likes": 49827435
+  "title": "Dating for Dummies 2",
+  "author": "Evan C",
+  "url": "mdatingfordummers.edu",
+  "likes": 6969
 }

@@ -64,11 +64,13 @@ const blogs = [
 
 const users = [
   {
+    _id: '5a422bc61babc676234d17fc',
     username: 'gwil0S',
     name: 'Gandy Willows',
     password: 'swillumulliws'
   },
   {
+    _id: '5a422bc61b54a676234d17fc',
     username: 'm4x',
     name: 'Mark Forexe',
     password: 'likesxtrasalt'

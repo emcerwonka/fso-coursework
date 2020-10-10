@@ -2,13 +2,23 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
+const bcrypt = require('bcrypt')
 const blogList = require('./test_info').blogs
 const userList = require('./test_info').users
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const logger = require('../utils/logger')
 const { users } = require('./test_info')
 
 beforeEach(async () => {
+  await User.deleteMany({})
+
+  for (let user of userList) {
+    let userObject = new User(user)
+    userObject.passwordHash = await bcrypt.hash(user.password, 10)
+    await userObject.save()
+  }
+
   await Blog.deleteMany({})
 
   for (let blog of blogList) {
@@ -45,7 +55,16 @@ describe('api test', () => {
       likes: '15'
     })
 
+    const userLogin = {
+      'username': 'gwil0S',
+      'password': 'swillumulliws'
+    }
+
+    const loginResponse = await api.post('/api/login').send(userLogin)
+    const token = loginResponse.body.token
+
     await api.post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -64,8 +83,17 @@ describe('api test', () => {
       url: 'www.thissiteisshite.edu'
     })
 
+    const userLogin = {
+      'username': 'gwil0S',
+      'password': 'swillumulliws'
+    }
+
+    const loginResponse = await api.post('/api/login').send(userLogin)
+    const token = loginResponse.body.token
+
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -81,18 +109,51 @@ describe('api test', () => {
       likes: 100000000
     })
 
+    const userLogin = {
+      'username': 'gwil0S',
+      'password': 'swillumulliws'
+    }
+
+    const loginResponse = await api.post('/api/login').send(userLogin)
+    const token = loginResponse.body.token
+
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
       .send(badBlog)
       .expect(400)
   })
 
   test('blog can be deleted', async () => {
+    const newBlog = new Blog({
+      title: 'Big Sad Bois',
+      author: 'James Weston',
+      url: 'www.bsb.com',
+      likes: '22'
+    })
+
+    const userLogin = {
+      'username': 'gwil0S',
+      'password': 'swillumulliws'
+    }
+
+    const loginResponse = await api
+      .post('/api/login')
+      .send(userLogin)
+    const token = loginResponse.body.token
+
+    const postResponse = await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(newBlog)
+    const blogToDelete = postResponse.body
+
+
     const blogsInDb = await api.get('/api/blogs')
-    const blogToDelete = blogsInDb.body[0]
 
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', `bearer ${token}`)
       .expect(204)
 
     const blogsAfterTest = await api.get('/api/blogs')

@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const { blogs } = require('../tests/test_info')
+const logger = require('../utils/logger')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { name: 1, username: 1 })
@@ -32,7 +33,20 @@ blogsRouter.post('/', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
-  await Blog.findByIdAndRemove(request.params.id)
+  const token = request.token
+
+  const creator = await User.findById(token.id)
+  const blog = await Blog.findById(request.params.id)
+  const blogUserId = blog.user.toString()
+  logger.info(blogUserId)
+
+  if (!(creator.id.toString() === blogUserId)) {
+    return response.status(401).json({
+      error: 'This user does not have authorization to delete the specified blog.'
+    })
+  }
+
+  await Blog.findByIdAndRemove(blog.id)
   response.status(204).end()
 })
 

@@ -22,14 +22,16 @@ const errorHandler = (error, request, response, next) => {
 }
 
 const tokenManager = (request, response, next) => {
-  const decodedToken = jwt.decode(getTokenFrom(request), process.env.SECRET)
-  if (!decodedToken || !decodedToken.id) {
-    return response.status(401).json({
-      error: 'Token missing or invalid'
-    })
-  }
+  if (request.method === 'DELETE' || request.method === 'POST') {
+    const decodedToken = jwt.decode(getTokenFrom(request), process.env.SECRET)
+    if (!decodedToken || !decodedToken.id) {
+      return response.status(401).json({
+        error: 'Token missing or invalid'
+      })
+    }
 
-  request.token = decodedToken
+    request.token = decodedToken
+  }
   next()
 }
 

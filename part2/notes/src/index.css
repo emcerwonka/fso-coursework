@@ -13,6 +13,11 @@ h1 {
   font-style: italic;
 }
 
+h2 {
+  color: green;
+  font-style: italic;
+}
+
 .note {
   color: grey;
   padding-top: 3px;

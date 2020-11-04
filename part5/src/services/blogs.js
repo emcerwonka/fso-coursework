@@ -21,7 +21,7 @@ const createBlog = async (blog) => {
 
 const deleteBlog = async (blog) => {
   const response = await axios.delete(
-    baseUrl + `/${blog.id}`, {headers: { Authorization: token }}
+    baseUrl + `/${blog.id}`, { headers: { Authorization: token }}
   )
   return response.data
 }

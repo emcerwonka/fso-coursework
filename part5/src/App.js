@@ -109,7 +109,7 @@ const App = () => {
   const deleteBlog = async (blog) => {
     if (blog.user.username !== user.username) {
       setErrorState(true)
-      setNotification(`You cannot remove blogs added by other users.`)
+      setNotification('You cannot remove blogs added by other users.')
       setTimeout(() => {
         setNotification(null)
         setErrorState(false)

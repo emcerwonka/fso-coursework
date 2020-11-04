@@ -31,7 +31,7 @@ const Blog = ({
   const deleteBlogHandler = (event) => {
     event.preventDefault()
     if (window.confirm(`Do you really want to remove ${blog.title}?`)) {
-      console.log(`Deleting blog with id ${blog.id}`);
+      console.log(`Deleting blog with id ${blog.id}`)
       deleteBlog(blog)
     }
   }

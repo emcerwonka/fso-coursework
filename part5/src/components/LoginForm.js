@@ -9,7 +9,8 @@ const LoginForm = ({
   setUsername,
   password,
   setPassword
-}) => (
+}) => {
+  return (
     <div>
       <h2>log in to ( Blog)(List )</h2>
       <Notification
@@ -19,7 +20,7 @@ const LoginForm = ({
       <form onSubmit={login}>
         <div>
           u s e r n a m e :
-      <input
+          <input
             type="text"
             value={username}
             name="username"
@@ -28,7 +29,7 @@ const LoginForm = ({
         </div>
         <div>
           p a s s w o r d :
-      <input
+          <input
             type="password"
             value={password}
             name="password"
@@ -39,5 +40,6 @@ const LoginForm = ({
       </form>
     </div>
   )
+}
 
 export default LoginForm

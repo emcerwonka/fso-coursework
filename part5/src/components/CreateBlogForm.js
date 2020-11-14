@@ -30,10 +30,12 @@ const CreateBlogForm = ({
 
   return (
     <div>
-      <form onSubmit={createBlogHandler}>
+      <form className='createBlogForm' onSubmit={createBlogHandler}>
         <div>
           t i t l e :
-          <input
+          <input 
+            className='title'
+            id='title'
             type="text"
             value={blogTitle}
             name="title"
@@ -42,7 +44,9 @@ const CreateBlogForm = ({
         </div>
         <div>
           a u t h o r :
-          <input
+          <input 
+            className='author'
+            id='author'
             type="text"
             value={blogAuthor}
             name="author"
@@ -51,7 +55,9 @@ const CreateBlogForm = ({
         </div>
         <div>
           u r l :
-          <input
+          <input 
+            className='url'
+            id='url'
             type="text"
             value={blogUrl}
             name="url"
